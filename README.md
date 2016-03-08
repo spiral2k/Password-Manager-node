@@ -19,9 +19,8 @@ Your first master password is your master password for all 'create' & 'get' comm
 -Create new account
 node app.js create -n twitter -u yoyo59 -p qwe123 -m momy
 
---------------------------------
+
 Starting Password manager App.
---------------------------------
 
 New accounts created:  { name: 'twitter', username: 'yoyo59', password: 'qwe123' }
 Your master password:  momy
@@ -32,9 +31,7 @@ Your master password:  momy
 node app.js get -n twitter -m momy
 
 
---------------------------------
 Starting Password manager App.
---------------------------------
 
 Searching for account:  twitter
 
@@ -43,5 +40,6 @@ Account found:
 
 
 Have fun!
+
 spiral2k
 
