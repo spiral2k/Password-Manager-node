@@ -30,6 +30,12 @@ var argv = require('yargs')
                 alias: 'p',
                 description: 'Your password name',
                 type: 'string'
+            },
+            masterPassword: {
+                demand: true,
+                alias: 'm',
+                description: 'Your MASTER password name',
+                type: 'string'
             }
         }).help('help');
     }).command('get', 'Get account information', function(yargs){
@@ -38,6 +44,12 @@ var argv = require('yargs')
                 demand: true,
                 alias: 'n',
                 description: 'Your name',
+                type: 'string'
+            },
+            masterPassword: {
+                demand: true,
+                alias: 'm',
+                description: 'Your MASTER password name',
                 type: 'string'
             }
         }).help('help');
@@ -91,9 +103,9 @@ if(command === 'create'){
         name: argv.name,
         username: argv.username,
         password: argv.password
-    });
+    }, argv.masterPassword);
 } else if(command === 'get'){
-    var accountFound = getAccount(argv.name);
+    var accountFound = getAccount(argv.name, argv.masterPassword);
 
     console.log(accountFound);
 }
