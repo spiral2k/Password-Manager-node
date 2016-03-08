@@ -65,50 +65,9 @@ var storage = require('node-persist');
 storage.initSync();
 
 
-function getAccounts(masterPassword){
-
-    var encryptedAccount = storage.getItemSync('accounts');
-    var accounts = [];
-
-    if(typeof encryptedAccount !== 'undefined') {
-        var bytes = crypto.AES.decrypt(encryptedAccount, masterPassword);
-        accounts = JSON.parse(bytes.toString(crypto.enc.Utf8));
-    }
-
-    // return accounts array
-    return accounts;
-}
-
-
-function saveAccounts(accounts, masterPassword){
-
-    var encryptedAccounts = crypto.AES.encrypt(JSON.stringify(accounts), masterPassword);
-
-    storage.setItemSync('accounts', encryptedAccounts.toString());
-
-    return accounts
-
-}
-
-
-function createAccount(account, masterPassword){
-
-    var accounts = getAccounts(masterPassword);
-
-
-
-    accounts.push(account);
-
-    saveAccounts(accounts, masterPassword);
-
-
-    return account;
-
-}
 
 
 function getAccount(accountName, masterPassword){
-
 
     var accounts = getAccounts(masterPassword);
 
@@ -124,6 +83,51 @@ function getAccount(accountName, masterPassword){
     console.log('No account found.');
 
     return false;
+}
+
+
+function saveAccounts(accounts, masterPassword){
+
+    var encryptedAccounts = crypto.AES.encrypt(JSON.stringify(accounts), masterPassword);
+
+    storage.setItemSync('accounts', encryptedAccounts.toString());
+
+    return accounts
+
+}
+
+
+function getAccounts(masterPassword){
+
+    var encryptedAccount = storage.getItemSync('accounts');
+    var accounts = [];
+
+    if(typeof encryptedAccount !== 'undefined') {
+        var bytes = crypto.AES.decrypt(encryptedAccount, masterPassword);
+        accounts = JSON.parse(bytes.toString(crypto.enc.Utf8));
+    }
+
+    // return accounts array
+    return accounts;
+}
+
+
+
+
+function createAccount(account, masterPassword){
+
+    // get decrypted accounts by master password | get Object (JSON.parse)
+    var accounts = getAccounts(masterPassword);
+
+    // push new user account to array
+    accounts.push(account);
+
+    saveAccounts(accounts, masterPassword);
+
+    console.log('\nNew accounts created: ', account, '\n Your master password: ', masterPassword);
+
+    return account;
+
 }
 
 
