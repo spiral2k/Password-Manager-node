@@ -10,6 +10,7 @@ console.log('\n--------------------------------\n');
 console.log('Starting Password manager App.\n');
 console.log('--------------------------------\n');
 
+var crypto = require('crypto-js');
 var argv = require('yargs')
     .command('create', 'Create account', function(yargs){
         yargs.options({
@@ -63,24 +64,53 @@ var command = argv._[0];
 var storage = require('node-persist');
 storage.initSync();
 
-function createAccount(account){
-    var accounts = storage.getItemSync('accounts');
 
-    if(typeof accounts === 'undefined') {
-        accounts = [];
+function getAccounts(masterPassword){
+
+    var encryptedAccount = storage.getItemSync('accounts');
+    var accounts = [];
+
+    if(typeof encryptedAccount !== 'undefined') {
+        var bytes = crypto.AES.decrypt(encryptedAccount, masterPassword);
+        accounts = JSON.parse(bytes.toString(crypto.enc.Utf8));
     }
 
-    accounts.push(account);
-    storage.setItemSync('accounts', accounts);
-
-    console.log('Account '+ account.name +' created!\n ' , account)
-
-    return account;
+    // return accounts array
+    return accounts;
 }
 
 
-function getAccount(accountName){
-    var accounts = storage.getItemSync('accounts');
+function saveAccounts(accounts, masterPassword){
+
+    var encryptedAccounts = crypto.AES.encrypt(JSON.stringify(accounts), masterPassword);
+
+    storage.setItemSync('accounts', encryptedAccounts.toString());
+
+    return accounts
+
+}
+
+
+function createAccount(account, masterPassword){
+
+    var accounts = getAccounts(masterPassword);
+
+
+
+    accounts.push(account);
+
+    saveAccounts(accounts, masterPassword);
+
+
+    return account;
+
+}
+
+
+function getAccount(accountName, masterPassword){
+
+
+    var accounts = getAccounts(masterPassword);
 
     console.log('Searching for account: ',accountName);
 
@@ -106,7 +136,6 @@ if(command === 'create'){
     }, argv.masterPassword);
 } else if(command === 'get'){
     var accountFound = getAccount(argv.name, argv.masterPassword);
-
     console.log(accountFound);
 }
 
