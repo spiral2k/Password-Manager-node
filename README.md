@@ -5,20 +5,18 @@ CLI Password manager with AES encryption.
 save your passwords in a safe place for your social sites, shopping sites etc localy.
 
 
--n = Name of the account
-
--u = Username
-
--p = Password
-
--m = Your master password
+  - -n = Name of the account
+  - -u = Username
+  - -p = Password
+  - -m = Your master password
 
 
 Your first master password is your master password for all 'create' & 'get' commands. 
 
--Create new account
+### Create new account
+```sh
 node app.js create -n twitter -u yoyo59 -p qwe123 -m momy
-
+```
 
 Starting Password manager App.
 
@@ -27,9 +25,10 @@ Your master password:  momy
 
 --------------------------------------------------------------------------------------------------------------
 
--Get account
+### Get account
+```sh
 node app.js get -n twitter -m momy
-
+```
 
 Starting Password manager App.
 
