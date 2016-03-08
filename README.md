@@ -4,10 +4,15 @@ CLI Password manager with AES encryption.
 
 save your passwords in a safe place for your social sites, shopping sites etc localy.
 
+
 -n = Name of the account
+
 -u = Username
+
 -p = Password
+
 -m = Your master password
+
 
 Your first master password is your master password for all 'create' & 'get' commands. 
 
