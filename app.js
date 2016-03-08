@@ -133,14 +133,23 @@ function createAccount(account, masterPassword){
 
 
 if(command === 'create'){
-    createAccount({
-        name: argv.name,
-        username: argv.username,
-        password: argv.password
-    }, argv.masterPassword);
+    try {
+        createAccount({
+            name: argv.name,
+            username: argv.username,
+            password: argv.password
+        }, argv.masterPassword);
+
+    }catch(e) {
+        console.log("Unable to create account.");
+    }
 } else if(command === 'get'){
-    var accountFound = getAccount(argv.name, argv.masterPassword);
-    console.log(accountFound);
+    try {
+        var accountFound = getAccount(argv.name, argv.masterPassword);
+        console.log(accountFound);
+    }catch (e){
+        console.log("Unable to fetch account.");
+    }
 }
 
 
